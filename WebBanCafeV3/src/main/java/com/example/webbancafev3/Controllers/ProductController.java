@@ -4,11 +4,20 @@ import com.example.webbancafev3.Models.Product;
 import com.example.webbancafev3.Services.CategoryService;
 import com.example.webbancafev3.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import jakarta.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/products")
@@ -33,11 +42,26 @@ public class ProductController
         return "products/add-product";
     }
     @PostMapping("/add")
-    public String AddProduct(@Valid Product product, BindingResult Result)
+    public String AddProduct(@Valid Product product, BindingResult Result, @RequestParam(name = "imageFile") MultipartFile imageFile)
     {
         if(Result.hasErrors())
         {
             return "products/add-product";
+        }
+        if(imageFile != null && imageFile.getSize() > 0)
+        {
+            try
+            {
+                File saveFile = new ClassPathResource("static/images").getFile();
+                String newImageFile = UUID.randomUUID() + ".png";
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + newImageFile);
+                Files.copy(imageFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                product.setImagePath(newImageFile);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
         }
         productService.AddProduct(product);
         return "redirect:/products";
@@ -52,12 +76,15 @@ public class ProductController
         return "products/update-product";
     }
     @PostMapping("/update/{ID}")
-    public String UpdateProduct(@PathVariable Long ID, @Valid Product product, BindingResult Result)
+    public String UpdateProduct(@PathVariable Long ID, @Valid Product product, BindingResult Result, @RequestParam(name = "imageFile") MultipartFile imageFile)
     {
         if(Result.hasErrors())
         {
             product.setID(ID);
             return "products/update-product";
+        }
+        if (imageFile != null && !imageFile.isEmpty()) {
+            product.setImagePath("C:\\Users\\Lenovo\\IdeaProjects\\WebBanCafeV3\\src\\main\\resources\\static\\images");
         }
         productService.UpdateProduct(product);
         return "redirect:/products";
