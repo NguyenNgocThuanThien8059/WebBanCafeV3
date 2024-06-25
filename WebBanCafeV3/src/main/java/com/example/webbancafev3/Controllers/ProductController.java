@@ -42,21 +42,20 @@ public class ProductController
         return "products/add-product";
     }
     @PostMapping("/add")
-    public String AddProduct(@Valid Product product, BindingResult Result, @RequestParam(name = "imageFile") MultipartFile imageFile)
+    public String AddProduct(@Valid Product product, BindingResult Result, @RequestParam("imageFile") MultipartFile imageFile)
     {
         if(Result.hasErrors())
         {
             return "products/add-product";
         }
-        if(imageFile != null && imageFile.getSize() > 0)
+        if(imageFile != null && !imageFile.isEmpty())
         {
             try
             {
-                File saveFile = new ClassPathResource("static/images").getFile();
-                String newImageFile = UUID.randomUUID() + ".png";
-                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + newImageFile);
-                Files.copy(imageFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-                product.setImagePath(newImageFile);
+                String fileName = UUID.randomUUID() + ".png";
+                Path path = Paths.get("src/main/resources/static/images/" + fileName);
+                Files.copy(imageFile.getInputStream(), path);
+                product.setImagePath("/images/" + fileName);
             }
             catch(Exception e)
             {
@@ -84,7 +83,7 @@ public class ProductController
             return "products/update-product";
         }
         if (imageFile != null && !imageFile.isEmpty()) {
-            product.setImagePath("C:\\Users\\Lenovo\\IdeaProjects\\WebBanCafeV3\\src\\main\\resources\\static\\images");
+            product.setImagePath("src/main/resources/static/images");
         }
         productService.UpdateProduct(product);
         return "redirect:/products";

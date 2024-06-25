@@ -2,6 +2,7 @@ package com.example.webbancafev3.Models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Setter
 @Getter
@@ -21,4 +22,6 @@ public class Product
     @JoinColumn(name = "category_ID")
     private Category category;
     private String ImagePath;
+    @Transient
+    private MultipartFile imageFile;
 }

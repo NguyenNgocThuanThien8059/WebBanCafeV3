@@ -73,7 +73,7 @@
             <td th:text="${product.description}"></td>
             <td th:text="${product.category.name}"></td>
             <td>
-                <img height = "200px" width = "100px" th:src="@{/images/{imagePath}(imagePath=${product.imagePath})}"/>
+                <img th:src="@{${product.imagePath}}" width="200px" height="100px">
             </td>
             <td sec:authorize="hasAuthority('ADMIN')">
                 <div sec:authorize="hasAuthority('ADMIN')">

@@ -69,8 +69,8 @@
             <textarea th:field = "*{description}" class = "form-control" id = "description" required></textarea>
         </div>
         <div class = "mb-3">
-            <label for = "image" class = "form-label"></label>
-            <input type = "file" th:field = "*{imagePath}" class = "form-control" id = "image" placeholder = "image" required>
+            <label for = "imageFile" class = "form-label"></label>
+            <input type="file" th:field="*{imageFile}" class="form-control" id="imageFile" accept="image/*">
         </div>
         <button type = "submit" class = "btn btn-primary">Add Product</button>
         <a th:href = "@{/products}" class = "btn btn-link">Cancel</a>
