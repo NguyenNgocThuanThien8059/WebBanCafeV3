@@ -41,10 +41,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link text-black active" aria-current="page" href="/products" style="margin-left: 20px;">Product</a>
-                    </li>
-                    <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
+                    <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')" style="margin-left: 20px">
                         <a th:href="@{/products/add}" class="nav-link text-black">Add New Product</a>
                     </li>
                     <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
@@ -62,7 +59,7 @@
                         <a class="nav-link text-black" href="/coffees">Coffees</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-black">Shop</a>
+                        <a class="nav-link text-black" href="/products">Shop</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-black" href="/blog">Blog</a>

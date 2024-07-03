@@ -65,7 +65,7 @@
                         <a class="nav-link text-black" href="contact" style="margin-right: 20px;">Contact</a>
                     </li>
                     <li class="nav-item d-flex align-items-center" sec:authorize="isAuthenticated()">
-                        <span class="navbar-text text-black user_icon" style="margin-right: 20px;">
+                        <span class="navbar-text text-black user_icon" style="margin-right: 10px;">
                             <i class = "fa fa-user" aria-hidden="true"></i>
                             <span sec:authentication="name"></span>
                         </span>
@@ -78,52 +78,63 @@
                     <li class="nav-item" sec:authorize="!isAuthenticated()">
                         <a class="btn btn-outline-light text-black" href="/login"><span class = "user_icon"><i class = "fa fa-user" aria-hidden="true"></i></span>Login</a>
                     </li>
-                    <li><a href="#" style="margin-left: 20px;"><i class="fa fa-search" aria-hidden="true"></i></a></li>
+                    <div id="searchInput">
+                        <input type="text" id="searchValue" class="form-control" placeholder="Search by product name" style="margin-left: 10px">
+                    </div>
+                    <li>
+                        <a href="#" style="margin-left: 20px;" onclick="SearchInput()"><i class="fa fa-search" aria-hidden="true"></i></a>
+                    </li>
                 </ul>
             </div>
         </nav>
     </div>
 </div>
 <section layout:fragment="content">
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-        <tr>
-            <th sec:authorize="hasAuthority('ADMIN')">ID</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Category Name</th>
-            <th>Image</th>
-            <th sec:authorize="hasAuthority('ADMIN')">Actions</th>
-            <th>Add To Cart</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="product : ${products}">
-            <td th:text="${product.ID}" sec:authorize="hasAuthority('ADMIN')"></td>
-            <td th:text="${product.name}"></td>
-            <td th:text="${product.price}"></td>
-            <td th:text="${product.description}"></td>
-            <td th:text="${product.category.name}"></td>
-            <td>
-                <img th:src="@{${product.imagePath}}" width="200px" height="100px">
-            </td>
-            <td sec:authorize="hasAuthority('ADMIN')">
-                <div sec:authorize="hasAuthority('ADMIN')">
-                    <a th:href="@{/products/edit/{id}(id=${product.ID})}" class="btn btn-success btn-sm">Edit</a>
-                    <a th:href="@{/products/delete/{id}(id=${product.ID})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc không?')">Delete</a>
+    <div class="row">
+        <!-- Loop through each product -->
+        <div class="col-md-4 mb-4" th:each="product : ${products}">
+            <div class="card">
+                <img th:src="@{${product.imagePath}}" class="card-img-top" alt="Product Image">
+                <div class="card-body">
+                    <h3 class="card-title text-center" th:text="${product.name}"></h3>
+                    <p class="card-text fs-5 text-center" th:text="${product.description}"></p>
+                    <p class="card-price fs-5"><span class="text-muted">Price:</span> <span th:text="${product.price}"></span></p>
+                    <div class="text-center mb-3">
+                        <form th:action="@{/cart/add}" method="post" sec:authorize="isAuthenticated()">
+                            <input type="number" name="Quantity" min="1" value="1" class="form-control d-inline-block" style="width: 70px;">
+                            <input type="hidden" th:value="${product.ID}" name="ProductID"/>
+                            <button type="submit" class="btn btn-warning btn-sm">Add to Cart</button>
+                        </form>
+                    </div>
+                    <div class="d-flex justify-content-between" sec:authorize="hasAuthority('ADMIN')">
+                        <div>
+                            <a th:href="@{/products/edit/{id}(id=${product.ID})}" class="btn btn-success btn-sm">Edit</a>
+                        </div>
+                        <div>
+                            <a th:href="@{/products/delete/{id}(id=${product.ID})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc không?')">Delete</a>
+                        </div>
+                    </div>
                 </div>
-            </td>
-            <td>
-                <form th:action="@{/cart/add}" method="post" sec:authorize="isAuthenticated()">
-                    <input type="number" name="Quantity" min="1" value="1" class="form-control d-inline-block" style="width: 70px;">
-                    <input type="hidden" th:value="${product.ID}" name="ProductID"/>
-                    <button type="submit" class="btn btn-warning btn-sm">Add to Cart</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+            </div>
+        </div>
+    </div>
 </section>
+<script>
+    /* JavaScript function to handle showing/hiding the search input */
+    function SearchInput() {
+        var searchInput = document.getElementById('searchInput');
+        if (searchInput.style.display === 'none') {
+            searchInput.style.display = 'inline-block';
+            document.getElementById('searchValue').focus(); // Focus on the input field
+        } else {
+            var searchValue = document.getElementById('searchValue').value.trim();
+            if (searchValue !== '') {
+                // Perform search
+                var url = "/products/search?name=" + encodeURIComponent(searchValue);
+                window.location.href = url;
+            }
+        }
+    }
+</script>
 </body>
 </html>
