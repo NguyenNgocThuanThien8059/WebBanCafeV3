@@ -31,7 +31,7 @@
     <!-- Tweaks for older IEs-->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 </head>
-<body>
+<body class="product-list-body">
 <div class="header_section header_bg">
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg">
@@ -92,7 +92,7 @@
 <section layout:fragment="content">
     <div class="row">
         <!-- Loop through each product -->
-        <div class="col-md-4 mb-4" th:each="product : ${products}">
+        <div class="col-md-3 mb-2" th:each="product : ${products}" th:if="${product.active}">
             <div class="card">
                 <img th:src="@{${product.imagePath}}" class="card-img-top" alt="Product Image">
                 <div class="card-body">
@@ -100,7 +100,7 @@
                     <p class="card-text fs-5 text-center" th:text="${product.description}"></p>
                     <p class="card-price fs-5"><span class="text-muted">Price:</span> <span th:text="${product.price}"></span></p>
                     <div class="text-center mb-3">
-                        <form th:action="@{/cart/add}" method="post" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/cart/add}" method="post">
                             <input type="number" name="Quantity" min="1" value="1" class="form-control d-inline-block" style="width: 70px;">
                             <input type="hidden" th:value="${product.ID}" name="ProductID"/>
                             <button type="submit" class="btn btn-warning btn-sm">Add to Cart</button>
