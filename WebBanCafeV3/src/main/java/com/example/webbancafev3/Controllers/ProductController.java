@@ -4,6 +4,7 @@ import com.example.webbancafev3.Models.Product;
 import com.example.webbancafev3.Services.CategoryService;
 import com.example.webbancafev3.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -17,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -103,5 +105,11 @@ public class ProductController
     {
         productService.DeleteProductByID(ID);
         return "redirect:/products";
+    }
+    @GetMapping("/search")
+    public String searchProducts(@RequestParam("name") String name, Model model) {
+        List<Product> products = productService.findProductsByNameContaining(name);
+        model.addAttribute("products", products);
+        return "products/product-list";
     }
 }

@@ -64,5 +64,8 @@ public class ProductService
         }
         productRepository.deleteById(ID);
     }
+    public List<Product> findProductsByNameContaining(String name) {
+        return productRepository.findByNameContainingIgnoreCase(name);
+    }
 }
 
