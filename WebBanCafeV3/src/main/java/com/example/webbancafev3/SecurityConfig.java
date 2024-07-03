@@ -40,7 +40,7 @@ public class SecurityConfig
     @Bean
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception
     {
-        return http.authorizeHttpRequests(auth -> auth.requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/error", "/products", "/cart", "/cart/**", "/images2/**", "/contact", "/about", "/blog", "/coffees", "/productimages/**", "products/search")
+        return http.authorizeHttpRequests(auth -> auth.requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/error", "/products", "/images2/**", "/contact", "/about", "/blog", "/coffees", "/productimages/**", "products/search")
                 .permitAll().requestMatchers("/products/edit/**", "/products/add", "/products/delete").hasAnyAuthority("ADMIN").requestMatchers("/api/**")
                 .permitAll().anyRequest().authenticated())
                 .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login").deleteCookies("JSESSIONID").invalidateHttpSession(true).clearAuthentication(true).permitAll())

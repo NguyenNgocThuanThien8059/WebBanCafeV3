@@ -62,7 +62,9 @@ public class ProductService
         {
             throw new IllegalStateException("Product with ID " + ID + " does not exist");
         }
-        productRepository.deleteById(ID);
+        Product existingProduct = productRepository.findById(ID).orElseThrow(() -> new IllegalStateException("Product with ID " + ID + " does not exist"));
+        existingProduct.setActive(false);
+        productRepository.save(existingProduct);
     }
     public List<Product> findProductsByNameContaining(String name) {
         return productRepository.findByNameContainingIgnoreCase(name);

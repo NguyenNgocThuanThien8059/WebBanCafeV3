@@ -24,4 +24,5 @@ public class Product
     private String ImagePath;
     @Transient
     private MultipartFile imageFile;
+    private Boolean Active = true;
 }
