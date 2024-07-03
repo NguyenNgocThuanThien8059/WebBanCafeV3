@@ -4,15 +4,15 @@ import com.example.webbancafev3.Models.Product;
 import com.example.webbancafev3.Services.CategoryService;
 import com.example.webbancafev3.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import jakarta.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -53,9 +53,9 @@ public class ProductController
             try
             {
                 String fileName = UUID.randomUUID() + ".png";
-                Path path = Paths.get("src/main/resources/static/images/" + fileName);
+                Path path = Paths.get("src/main/resources/static/productimages/" + fileName);
                 Files.copy(imageFile.getInputStream(), path);
-                product.setImagePath("/images/" + fileName);
+                product.setImagePath("/productimages/" + fileName);
             }
             catch(Exception e)
             {
@@ -82,10 +82,20 @@ public class ProductController
             product.setID(ID);
             return "products/update-product";
         }
-        if (imageFile != null && !imageFile.isEmpty()) {
-            product.setImagePath("src/main/resources/static/images");
+        if (imageFile != null && !imageFile.isEmpty())
+        {
+            try {
+                String fileName = UUID.randomUUID() + ".png";
+                Path path = Paths.get("src/main/resources/static/images/" + fileName);
+                Files.copy(imageFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                product.setImagePath("/images/" + fileName);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
-        productService.UpdateProduct(product);
+        productService.UpdateProduct(product, imageFile);
         return "redirect:/products";
     }
     @GetMapping("/delete/{ID}")
