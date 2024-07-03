@@ -297,6 +297,38 @@ button {
     color: #4c4c4c;
 }
 
+body.product-list-body {
+    background-image: url(../images2/ProductListBG.jpg); /* Adjust the path based on your project structure */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Optional: Keeps the background image fixed while scrolling */
+}
+
+body.AboutPage-body {
+    background-image: url(../images2/AboutBG.jpg); /* Adjust the path based on your project structure */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Optional: Keeps the background image fixed while scrolling */
+}
+body.CoffeesPage-body {
+    background-image: url(../images2/CoffeesPageBG.png); /* Adjust the path based on your project structure */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Optional: Keeps the background image fixed while scrolling */
+}
+body.BlogPage-body {
+    background-image: url(../images2/BlogPageBG.jpg); /* Adjust the path based on your project structure */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Optional: Keeps the background image fixed while scrolling */
+}
+body.ContactPage-body {
+    background-image: url(../images2/ContactPageBG.jpg); /* Adjust the path based on your project structure */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Optional: Keeps the background image fixed while scrolling */
+}
+
 
 /* header section end */
 
@@ -740,7 +772,7 @@ button {
 .card-img-top {
     width: 100%;
     height: auto;
-    max-height: 200px;
+    max-height: 160px;
 }
 
 .card-body {
